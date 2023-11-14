@@ -32,7 +32,7 @@ router.post("/add",eventvalidation.validateEvent, async (req, res) => {
 router.get("/not-over", async (req, res) => {
   try {
     const currentDate = new Date();
-    eventSchema
+   await  eventSchema
       .find({ on: { $gte: currentDate } })
       .then((response) => {
         console.log(response);
@@ -49,10 +49,10 @@ router.get("/not-over", async (req, res) => {
 });
 
 //Get Details Using id
-router.get("/eventID", async (req, res) => {
+router.get("/eventID/:id", async (req, res) => {
   try {
-    const idQuery = req.query.id;
-    eventSchema
+    const idQuery = req.params.id;
+   await  eventSchema
       .findById(idQuery)
       .then((response) => {
         console.log(response);
@@ -74,7 +74,7 @@ router.get("/between-dates", async (req, res) => {
     const { startDate, endDate } = req.query;
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
-    eventSchema
+   await  eventSchema
       .find({ on: { $gte: startDateObj, $lte: endDateObj } })
       .then((response) => {
         console.log(response);
@@ -102,7 +102,7 @@ router.put("/update/:id", async (req, res) => {
       registrationLink: req.body.registrationLink,
     };
 
-    eventSchema
+   await eventSchema
       .findByIdAndUpdate(idQuery, eventUpdateData, { new: true })
       .then((response) => {
         console.log(response);
@@ -127,7 +127,7 @@ router.put("/update/:id", async (req, res) => {
 router.delete('/delete', async(req, res)=> {
     try{
         const idQuery=req.query.id;
-        eventSchema.findByIdAndDelete(idQuery)
+        await eventSchema.findByIdAndDelete(idQuery)
         .then((response)=>{
             console.log(response)
             res.status(200).json({events:response,message:"Deleted Sucessfully"})
